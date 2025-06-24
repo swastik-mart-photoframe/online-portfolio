@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://swastik-mart-photoframe.github.io/online-portfolio/sitemap.xml
