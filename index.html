@@ -149,7 +149,7 @@
 /* Mobile screens (up to 480px) */
 @media (max-width: 480px) {
   .hero {
-    min-height: 25vh;
+    min-height: 42vh;
     padding: 60px 0 40px 0;
   }
 }
@@ -270,7 +270,6 @@
       <a href="https://www.amazon.in/storefront?me=A1BXA4DJ5PNH3U&ref_=ssf_share" target="_blank" class="store-card">
         <img src="amazon-photo-frame.png" alt="Shop on Amazon">
       </a>
-
     </div>
   </div>
 </section>
@@ -302,14 +301,24 @@
     transform: scale(1.05);
   }
 
-  /* Mobile: stack cards */
+  /* ✅ Mobile: Force 3 in 1 row with no gap */
   @media screen and (max-width: 768px) {
+    .store-grid {
+      gap: 0; /* Remove gap */
+    }
+
     .store-card {
-      flex: 1 1 100%;
-      max-width: 100%;
+      flex: 0 0 33.3333%;
+      max-width: 33.3333%;
+    }
+
+    .store-card img {
+      max-height: 140px; /* Smaller image on mobile */
     }
   }
 </style>
+
+
 
 <!-- meesho flipkart amazon section end -->
 
