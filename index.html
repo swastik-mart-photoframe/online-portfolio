@@ -79,7 +79,35 @@
   }
 </style>
 
+<!-- hero image responsive -->
+ <style>
+.hero {
+  width: 100%;
+  min-height: 90vh;
+  position: relative;
+  padding: 120px 0 80px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
+/* Tablet screens (up to 768px) */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 50vh;
+    padding: 80px 0 60px 0;
+  }
+}
+
+/* Mobile screens (up to 480px) */
+@media (max-width: 480px) {
+  .hero {
+    min-height: 25vh;
+    padding: 60px 0 40px 0;
+  }
+}
+</style>
+<!-- end -->
 
 
 <style>
