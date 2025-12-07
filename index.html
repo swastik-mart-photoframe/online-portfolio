@@ -2,6 +2,11 @@
 <html lang="en">
 
 <head>
+
+  <!--Gallary start-->
+  
+  <!--gallery end-->
+
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Customized Photo Frames for Wall & Gifts | Swastik Mart</title>
@@ -256,7 +261,7 @@
       </nav>
 
       <a class="btn-getstarted" href="https://wa.me/919607213982" target="_blank" rel="noopener noreferrer">
-        <i class="fab fa-whatsapp fa-lg"> </i>&nbsp;&nbsp; WhatsApp
+        <i class="fab fa-whatsapp fa-lg"> </i>&nbsp;&nbsp; Chat With WhatsApp
       </a>
 
 
@@ -272,6 +277,846 @@
       </div>
 
     </section><!-- /Hero Section -->
+
+
+
+<!--Online product code start-->
+<!--
+    1. Required Libraries: jQuery (Only necessary for modal logic)
+    NOTE: Tailwind CSS CDN has been removed to prevent global style leakage.
+-->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- 2. Custom Styles for Isolation and Design -->
+<style>
+    /* *** ABSOLUTE ISOLATION & CONSTRAINT *** We use a high-specificity ID to scope the styles and ensure maximum width.
+    This replaces all Tailwind utility classes with explicit CSS.
+    */
+    #ecomm-container {
+        /* Inline style is still used for max specificity and centering */
+        max-width: 1200px;
+        width: 100%;
+        margin: 30px auto;
+        padding: 0 1rem;
+        font-family: 'Inter', sans-serif; /* Maintain modern look */
+        box-sizing: border-box; /* Important for modern layouts */
+    }
+
+    #ecomm-card-wrapper {
+        background-color: white;
+        border-radius: 1rem; /* 16px */
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        padding: 2rem;
+    }
+    
+    /* --- CATEGORY BUTTONS STYLING --- */
+    #category-controls {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; /* Allow wrapping on small screens */
+        gap: 0.75rem; /* Space between buttons */
+        margin-bottom: 2rem; /* Space below categories and above grid */
+        padding: 0.5rem;
+    }
+
+    .category-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 20px; 
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        white-space: nowrap; /* Prevent button text wrapping */
+        border: 1px solid #d1d5db; /* Light gray border */
+        background-color: #f9fafb; /* Light background for inactive state */
+        color: #4b5563; /* Gray text color */
+    }
+
+    .category-btn.active,
+    .category-btn:hover {
+        background-color: #ffc451; /* Activated color, matching the hover state of the Quick View button */
+        border-color: #ffc451;
+        color: #1f2937; /* Dark text for contrast */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* --- RESPONSIVE GRID LAYOUT --- */
+    #product-grid {
+        display: grid;
+        gap: 1.5rem; /* 24px gap */
+        /* Default Mobile: 1 column */
+        grid-template-columns: repeat(1, 1fr); 
+    }
+    
+    @media (min-width: 640px) { /* Small screens (Tablet/Sm) */
+        #product-grid {
+            /* Tablet/Small Desktop: 3 columns */
+            grid-template-columns: repeat(3, 1fr); 
+        }
+    }
+
+    @media (min-width: 1024px) { /* Large screens (Desktop/Lg) */
+        #product-grid {
+            /* Desktop: 4 columns */
+            grid-template-columns: repeat(4, 1fr); 
+        }
+    }
+    
+    /* --- PRODUCT CARD STYLING --- */
+    .product-card {
+        background-color: #fff;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Wrapper for the image to enforce a 1:1 aspect ratio */
+    .product-image-wrapper {
+        aspect-ratio: 1 / 1; /* Forces the box to be square (width:height) */
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .product-card img {
+        width: 100%;
+        height: 100%; /* Fill the 1:1 wrapper */
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .product-card:hover img {
+        transform: scale(1.1);
+    }
+
+    .product-card-content {
+        padding: 1rem;
+        text-align: center;
+    }
+
+    .product-card h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #1f2937;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .product-card p {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #4f46e5; /* Indigo 600 */
+        margin-top: 0.25rem;
+    }
+
+    /* --- BUY NOW BUTTON ON CARD STYLING (Unchanged) --- */
+    .quick-view-btn {
+        width: 100%;
+        padding: 0.5rem 0;
+        background-color: transparent; 
+        color: #4b5563; 
+        font-size: 0.875rem;
+        font-weight: 600;
+        border: 1px solid #9ca3af; 
+        border-radius: 20px; 
+        margin-top: 0.75rem;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        box-shadow: none; 
+        cursor: pointer;
+    }
+    
+    .quick-view-btn:hover {
+        background-color: #ffc451; /* Fill with requested color */
+        border-color: #ffc451; 
+        color: #1f2937; 
+    }
+
+    /* --- MODAL STYLING (Unchanged) --- */
+    #product-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: none; 
+        background-color: rgba(0, 0, 0, 0.75);
+    }
+
+    .modal-flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 1rem;
+    }
+    
+    #modal-content {
+        background-color: white;
+        border-radius: 0.75rem;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        width: 100%;
+        max-width: 56rem; 
+        overflow: hidden;
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity 0.3s ease-in, transform 0.3s ease-in;
+        position: relative; 
+    }
+
+    #modal-content.is-open {
+        opacity: 1;
+        transform: scale(1);
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    }
+    
+    /* Close Button */
+    #modal-close-btn {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        color: #4b5563;
+        font-size: 2.25rem;
+        padding: 0.5rem;
+        z-index: 50;
+        background-color: white;
+        border-radius: 9999px;
+        transition: color 0.2s;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+
+    #modal-close-btn:hover {
+        color: #1f2937;
+    }
+
+    /* Modal Layout */
+    .modal-body-layout {
+        display: flex;
+    }
+    
+    .modal-image-area {
+        width: 50%;
+        padding: 1.5rem;
+        background-color: #f9fafb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .modal-image-area img {
+        width: 100%;
+        max-height: 20rem; 
+        object-fit: contain;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-details-area {
+        width: 50%;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .modal-details-area h3 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-details-area .price {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: #10b981; /* Green 500 */
+        margin-bottom: 1rem;
+    }
+
+    .modal-details-area hr {
+        margin-bottom: 1rem;
+        border-color: #e5e7eb;
+    }
+
+    .modal-details-area .description-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #4b5563;
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-details-area .description-text {
+        color: #374151;
+        line-height: 1.625;
+    }
+
+    /* --- Action Buttons (WhatsApp/Amazon) (Unchanged) --- */
+    #modal-action-buttons {
+        margin-top: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        width: 100%; 
+    }
+
+    .action-button {
+        flex-grow: 1; /* Make both buttons equally wide */
+        text-align: center;
+        padding: 0.75rem 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        border-radius: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+        transition: background-color 0.3s ease, transform 0.2s;
+        text-decoration: none; 
+    }
+
+    /* WhatsApp Styling (Primary Order) */
+    .whatsapp-link {
+        background-color: #25D366; /* WhatsApp Green */
+        color: white;
+        border: 2px solid #25D366;
+    }
+
+    .whatsapp-link:hover {
+        background-color: #128C7E; /* Darker Green */
+        border-color: #128C7E;
+        transform: scale(1.02);
+    }
+
+    /* Amazon Styling (Affiliate Link) */
+    .amazon-link {
+        background-color: #FF9900; /* Amazon Orange */
+        color: #1f2937; /* Dark text */
+        border: 2px solid #FF9900;
+    }
+
+    .amazon-link:hover {
+        background-color: #e68a00; /* Darker Orange */
+        border-color: #e68a00;
+        transform: scale(1.02);
+    }
+    
+    /* Mobile-specific adjustments for Modal */
+    @media (max-width: 768px) { /* md breakpoint equivalent */
+        .modal-body-layout {
+            flex-direction: column;
+        }
+        .modal-image-area, .modal-details-area {
+            width: 100%;
+        }
+        .modal-image-area {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .modal-image-area img {
+            max-height: 15rem;
+        }
+        #category-controls {
+            justify-content: flex-start;
+            padding: 0.5rem 0;
+        }
+    }
+    
+    /* Mobile-specific adjustments for Buttons (Stacking) */
+    @media (max-width: 640px) {
+        #modal-action-buttons {
+            flex-direction: column; /* Stack buttons vertically on small screens */
+            gap: 0.75rem;
+        }
+    }
+    
+    /* --- PAGINATION STYLING (Unchanged) --- */
+    #pagination-controls {
+        font-size: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2rem;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        background-color: #f9fafb;
+        border-radius: 0.75rem;
+        box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    }
+    
+    .pagination-btn, .page-number {
+        /* padding: 0.5rem 1rem; */
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, color 0.2s;
+        border: 1px solid transparent;
+    }
+
+    
+    
+    .pagination-btn {
+        background-color: #4f46e5; /* Indigo 600 */
+        color: white;
+    }
+    
+    .pagination-btn:hover:not(.disabled) {
+        background-color: #4338ca; /* Indigo 700 */
+    }
+    
+    .pagination-btn.disabled {
+        background-color: #e5e7eb;
+        color: #9ca3af;
+        cursor: not-allowed;
+    }
+
+    .page-number {
+        color: #4b5563;
+        background-color: #fff;
+    }
+    
+    .page-number:hover {
+        background-color: #f3f4f6;
+    }
+
+    .page-number.active {
+        background-color: #c7d2fe; /* Indigo 200 */
+        color: #1e3a8a; /* Blue 900 */
+        border: 1px solid #a5b4fc; /* Indigo 300 */
+        cursor: default;
+    }
+
+    
+</style>
+
+<!-- 
+    --- ISOLATED COMPONENT WRAPPER ---
+-->
+<div id="ecomm-container" style="max-width: 1200px; margin: 30px auto; padding: 0 1rem;">
+
+    <!-- E-commerce Card Wrapper (The main visible part) -->
+    <div id="ecomm-card-wrapper">
+        <h2 style="font-size: 2.25rem; font-weight: 800; color: #1f2937; margin-bottom: 1.5rem; text-align: center;">Featured Products</h2>
+        <p style="text-align: center; color: #6b7280; margin-bottom: 1.5rem;">Check Our New Designs Here and Get Free Delivery.</p>
+
+        <!-- NEW: Category Controls -->
+        <div id="category-controls">
+            <!-- Buttons will be injected here by JavaScript -->
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid">
+            <!-- Products will be injected here by JavaScript -->
+        </div>
+
+        <!-- Pagination Controls -->
+        <div id="pagination-controls">
+            <!-- Buttons and Page Numbers will be injected by JavaScript -->
+        </div>
+
+    </div>
+
+    <!-- Product Detail Modal (Lightbox) -->
+    <div id="product-modal">
+        <div class="modal-flex-center">
+            
+            <!-- Modal Content -->
+            <div id="modal-content" role="dialog" aria-modal="true" tabindex="-1">
+                
+                <!-- Close Button -->
+                <button id="modal-close-btn" aria-label="Close product details">
+                    &times;
+                </button>
+
+                <div class="modal-body-layout">
+                    <!-- Image Area -->
+                    <div class="modal-image-area">
+                        <img id="modal-image" src="" alt="Product Image">
+                    </div>
+
+                    <!-- Details Area -->
+                    <div class="modal-details-area">
+                        <div>
+                            <h3 id="modal-title"></h3>
+                            <p id="modal-price" class="price"></p>
+                            
+                            <hr>
+                            
+                            <p class="description-label">Product Details</p>
+                            <p id="modal-description" class="description-text"></p>
+                        </div>
+                        
+                        <!-- Action Button Group -->
+                        <div id="modal-action-buttons">
+                            <!-- WhatsApp Button (Calls JS function) -->
+                            <a id="whatsapp-btn" href="javascript:void(0)" class="action-button whatsapp-link">
+                                Order on WhatsApp
+                            </a>
+                            <!-- Amazon Button (Direct Affiliate Link) -->
+                            <a id="amazon-btn" href="#" target="_blank" class="action-button amazon-link">
+                                Buy on Meesho
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. jQuery for Product Data, Filtering, Pagination, and Modal Functionality -->
+<script>
+    // Configuration
+    const WHATSAPP_NUMBER = '919607213982'; 
+    const ITEMS_PER_PAGE = 8;
+    let currentPage = 1;
+    // New: Variable to store the currently selected category filter
+    let currentCategory = 'All';
+
+    // Product Data Array (Added 'category' field and maintained your data)
+    const products = [
+        // Pencil Sketch Style (Category A)
+        { id: 1, title: "Pencil Sketch Photo", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "pencil-sketch(1).jpg", link: "#product-sketch1", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Pencil Sketch style" },
+        { id: 2, title: "Pencil Sketch Photo", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "pencil-sketch(2).jpg", link: "#product-sketch2", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Pencil Sketch style" },
+        { id: 3, title: "Pencil Sketch Photo", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "pencil-sketch(3).jpg", link: "#product-sketch3", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Pencil Sketch style" },
+        { id: 4, title: "Pencil Sketch Photo", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "pencil-sketch(4).jpg", link: "#product-sketch4", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Pencil Sketch style" },
+        
+        // Valentine Frames (Category B)
+        { id: 5, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "105-a.jpg", link: "#product-val1", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Valentine Frames" },
+        { id: 6, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "106-a.jpg", link: "#product-val2", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Valentine Frames" },
+        { id: 7, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "107-e.jpg", link: "#product-val3", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Valentine Frames" },
+        { id: 8, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "108-a.jpg", link: "#product-val4", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Valentine Frames" },
+        
+        // Pencil Sketch Style (More items for Page 2)
+        { id: 9, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "pencil-sketch-101.jpg", link: "#product-sketch5", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Pencil Sketch style" },
+        { id: 10, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "pencil-sketch-102.jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Pencil Sketch style" },
+
+        // Valentine Frames (More items for Page 2)
+        { id: 11, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(39).jpg", link: "#product-val5", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Valentine Frames" },
+        { id: 12, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(26).jpg", link: "#product-val6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Valentine Frames" },
+
+        // Other (New Category)
+        { id: 13, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-photo-frame(3).jpg", link: "#product-other1", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 14, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-photo-frame(4).jpg", link: "#product-other2", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 15, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-photo-frame(5).jpg", link: "#product-other3", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 16, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-photo-frame(6).jpg", link: "#product-other4", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+    
+        { id: 17, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "pencil-sketch-103.jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Pencil Sketch style" },
+        { id: 18, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "pencil-sketch-100.jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Pencil Sketch style" },
+        
+        //others
+        { id: 19, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(1).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 20, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(2).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 21, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(3).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 22, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(4).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 23, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(5).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 24, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(6).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 25, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(7).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 26, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(8).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 27, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(9).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 28, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(10).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 29, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(11).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 30, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(12).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 31, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(13).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 32, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(14).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 33, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(15).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 34, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(16).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 35, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(17).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 36, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(18).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 37, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(19).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 38, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(20).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 39, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(21).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 40, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(22).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 41, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(23).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 42, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(24).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 43, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(25).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 44, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(26).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 45, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(27).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 46, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(28).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 47, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(29).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 48, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(30).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 49, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(31).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 50, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(34).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 51, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(33).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 52, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(34).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 53, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(35).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 54, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(36).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 55, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(37).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 56, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(38).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 57, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(39).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 58, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(40).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 59, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(41).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 60, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(42).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 61, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(43).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 62, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(44).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" },
+        { id: 63, title: "Customized Photo Frame", price: "Rs: 300-349", description: "A4 Size Black Photo Frame 9in * 13.5in PS molding frame with Cold Lamination.", image: "best-online-photo-frame-(45).jpg", link: "#product-sketch6", amazonLink: "https://www.meesho.com/SwastikStore98559?ms=2", category: "Other" }
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+      ];
+
+    // Global variable to store the current product's data when the modal is open
+    let currentProductData = {};
+    
+    // --- Category Button Rendering ---
+    function renderCategoryControls() {
+        const $controls = $('#category-controls');
+        $controls.empty();
+        
+        // 1. Get unique categories (set to maintain order and uniqueness)
+        const categories = new Set(["All"]);
+        products.forEach(p => categories.add(p.category));
+
+        // 2. Render buttons
+        categories.forEach(category => {
+            const $btn = $(`<button class="category-btn" data-category="${category}">${category}</button>`);
+            
+            if (category === currentCategory) {
+                $btn.addClass('active');
+            }
+            
+            $btn.on('click', function() {
+                // Change filter state, reset to page 1, and re-render
+                currentCategory = category;
+                currentPage = 1;
+                $('.category-btn').removeClass('active');
+                $(this).addClass('active');
+                renderProductGrid(currentPage);
+            });
+            
+            $controls.append($btn);
+        });
+    }
+
+    // --- Core Rendering Function (Now paginated AND filtered) ---
+    function renderProductGrid(page = 1) {
+        // 1. Apply Filtering first
+        const filteredProducts = products.filter(product => 
+            currentCategory === 'All' || product.category === currentCategory
+        );
+        
+        // 2. Calculate pagination indices based on filtered set
+        const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+        if (page > totalPages && totalPages > 0) {
+             // If filter change reduces pages, go back to the last available page
+             page = totalPages;
+             currentPage = page;
+        } else if (totalPages === 0) {
+             // Handle no products case
+             const $grid = $('#product-grid');
+             $grid.empty().append('<p style="text-align: center; color: #9ca3af; padding: 2rem;">No products found in this category.</p>');
+             renderPaginationControls(0); // Render controls with 0 pages
+             return;
+        }
+
+        const startIndex = (page - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        const productsToDisplay = filteredProducts.slice(startIndex, endIndex);
+
+        const $grid = $('#product-grid');
+        $grid.empty();
+        
+        productsToDisplay.forEach(product => {
+            const html = `
+                <div class="product-card" 
+                     data-product-id="${product.id}" 
+                     data-title="${product.title}" 
+                     data-price="${product.price}" 
+                     data-description="${product.description}" 
+                     data-image="${product.image}" 
+                     data-link="${product.link}"
+                     data-amazonlink="${product.amazonLink}"
+                     data-category="${product.category}">
+                    
+                    <div class="product-image-wrapper">
+                        <img src="${product.image}" alt="${product.title}" onerror="this.onerror=null;this.src='https://placehold.co/1000x1000/94a3b8/ffffff?text=Image+Error';">
+                    </div>
+
+                    <div class="product-card-content">
+                        <h3>${product.title}</h3>
+                        <p>${product.price}</p>
+                        <button class="quick-view-btn">
+                            Buy Now 
+                        </button>
+                    </div>
+                </div>
+            `;
+            $grid.append(html);
+        });
+        
+        // Update controls based on the filtered product set
+        renderPaginationControls(totalPages);
+    }
+    
+    // --- Pagination Control Functions ---
+    function getTotalPages(filteredProductsCount) {
+        if (filteredProductsCount !== undefined) {
+             // Use count passed from renderProductGrid
+             return filteredProductsCount;
+        }
+        // Fallback calculation for modal open scenario (should not happen, but safe)
+        const currentFilteredProducts = products.filter(product => 
+            currentCategory === 'All' || product.category === currentCategory
+        );
+        return Math.ceil(currentFilteredProducts.length / ITEMS_PER_PAGE);
+    }
+
+    function goToPage(page) {
+        const totalPages = getTotalPages();
+        if (page < 1 || page > totalPages) return;
+        
+        currentPage = page;
+        renderProductGrid(currentPage);
+        
+        // Scroll to the top of the grid when changing pages
+        $('html, body').animate({
+            scrollTop: $('#product-grid').offset().top - 50 
+        }, 300);
+    }
+    
+    // totalPages is now passed from renderProductGrid
+    function renderPaginationControls(totalPages) {
+        const $controls = $('#pagination-controls');
+        $controls.empty();
+        
+        if (totalPages === undefined) {
+            totalPages = getTotalPages();
+        }
+
+        if (totalPages <= 1) return; // Hide controls if one or zero pages
+
+        // Previous Button
+        const $prevBtn = $(`<button class="pagination-btn" id="prev-btn">Previous</button>`);
+        if (currentPage === 1) {
+            $prevBtn.addClass('disabled').prop('disabled', true);
+        } else {
+            $prevBtn.on('click', () => goToPage(currentPage - 1));
+        }
+        $controls.append($prevBtn);
+        
+        // Page Numbers
+        for (let i = 1; i <= totalPages; i++) {
+            const $pageNumber = $(`<span class="page-number">${i}</span>`);
+            if (i === currentPage) {
+                $pageNumber.addClass('active');
+            } else {
+                $pageNumber.on('click', () => goToPage(i));
+            }
+            $controls.append($pageNumber);
+        }
+
+        // Next Button
+        const $nextBtn = $(`<button class="pagination-btn" id="next-btn">Next</button>`);
+        if (currentPage === totalPages) {
+            $nextBtn.addClass('disabled').prop('disabled', true);
+        } else {
+            $nextBtn.on('click', () => goToPage(currentPage + 1));
+        }
+        $controls.append($nextBtn);
+    }
+
+
+    // --- WhatsApp and Modal Functions (Unchanged) ---
+    function openWhatsAppChat() {
+        if (Object.keys(currentProductData).length === 0) {
+            console.error("No product data loaded for WhatsApp chat.");
+            return;
+        }
+
+        const { title, price } = currentProductData;
+        const message = `I would like to order this product%0A*Product:* ${title}%0A*Price:* ${price}`;
+        const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+        window.open(whatsappUrl, '_blank');
+        closeModal();
+    }
+
+
+    $(document).ready(function() {
+        // Initial setup: Render categories first, then the product grid for the "All" category
+        renderCategoryControls();
+        renderProductGrid(currentPage);
+
+        const $modal = $('#product-modal');
+        const $modalContent = $('#modal-content');
+        const $whatsappBtn = $('#whatsapp-btn');
+        const $amazonBtn = $('#amazon-btn');
+
+        // --- MODAL OPEN LOGIC (Delegated to product-grid) ---
+        $('#product-grid').on('click', '.product-card', function() {
+            const $card = $(this);
+            
+            // Collect all product data attributes
+            currentProductData = {
+                title: $card.data('title'),
+                price: $card.data('price'),
+                description: $card.data('description'),
+                image: $card.data('image'),
+                link: $card.data('link'),
+                amazonLink: $card.data('amazonlink')
+            };
+
+            // 1. Populate Modal Content
+            $('#modal-image').attr('src', currentProductData.image).attr('alt', currentProductData.title);
+            $('#modal-title').text(currentProductData.title);
+            $('#modal-price').text(currentProductData.price);
+            $('#modal-description').text(currentProductData.description);
+            
+            // 2. Set the click handler for the WhatsApp button
+            $whatsappBtn.off('click').on('click', openWhatsAppChat);
+
+            // 3. Set the Amazon affiliate link
+            $amazonBtn.attr('href', currentProductData.amazonLink);
+
+            // 4. Display Modal and animate
+            $modal.fadeIn(200, function() {
+                $modalContent.addClass('is-open');
+            });
+            $('body').css('overflow', 'hidden'); 
+            $('#modal-close-btn').focus();
+        });
+
+        // --- MODAL CLOSE LOGIC ---
+        function closeModal() {
+            $modalContent.removeClass('is-open');
+            currentProductData = {};
+
+            $modal.fadeOut(300, function() {
+                $('body').css('overflow', '');
+            });
+        }
+        
+        // Close Button Click
+        $('#modal-close-btn').on('click', closeModal);
+
+        // Click outside the modal content (backdrop click)
+        $modal.on('click', function(event) {
+            if (event.target === this) {
+                closeModal();
+            }
+        });
+
+        // Escape Key Press
+        $(document).on('keydown', function(event) {
+            if (event.key === 'Escape' && $modal.css('display') !== 'none') {
+                closeModal();
+            }
+        });
+    });
+</script>
+<!--Online product code end-->
+
 
     <!-- meesho flipkart amazon section start -->
 
@@ -461,13 +1306,12 @@
             <h3>Why Choose Swastik-Mart?</h3>
             <p>
               ✔️ <b>Premium Quality Frames at Affordable Prices</b>
-              All our photo frames are made using 2–3mm clear glass to ensure a crystal-clear display of your memories.
-              Unlike most online photo frames that come without glass, we offer sturdy glass frames for better
-              durability and finish.
+              All our photo frames are made using Cold Lamination technology to ensure a crystal-clear display of your memories.
+              We offer sturdy glass frames for better durability and finish.
               <br>
               ✔️ <b>Safe & Secure Packaging</b>
-              We take extra care in packaging every photo frame. Our packaging includes bubble wrap, thermocol
-              (harmacol), and high-quality corrugated boxes to ensure the product reaches you safely without any damage.
+              We take extra care in packaging every photo frame. Our packaging includes bubble wrap, thermocol,
+               and high-quality corrugated boxes to ensure the product reaches you safely without any damage.
 
               Perfect Frames for Every Occasion
               We offer a wide range of custom photo frames for:
@@ -711,6 +1555,7 @@
 
           <ul class="portfolio-filters isotope-filters" data-aos-delay="0">
             <li data-filter="*" class="filter-active">All</li>
+            <li data-filter=".sketch">Sketch Style</li>
             <li data-filter=".filter-app">Anniversary Frame</li>
             <li data-filter=".filter-product">Birthday Frame</li>
             <li data-filter=".filter-branding">Valentine's Frame</li>
@@ -734,14 +1579,72 @@
             <!---------------------------------------------------------------------------------------------------------------------------->
 
             <!-- Image Grid -->
+            <!--Sketch section-->
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item sketch">
+              <img src="pencil-sketch(1).jpg" class="img-fluid"
+                alt="Modern A4-sized wall photo frame with personalized photo and glass layere" style="cursor: pointer;"
+                onclick="openModal(this.src)">
+            </div>
+
+                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item sketch">
+              <img src="pencil-sketch(2).jpg" class="img-fluid"
+                alt="Modern A4-sized wall photo frame with personalized photo and glass layere" style="cursor: pointer;"
+                onclick="openModal(this.src)">
+            </div>
+
+                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item sketch">
+              <img src="pencil-sketch(3).jpg" class="img-fluid"
+                alt="Modern A4-sized wall photo frame with personalized photo and glass layere" style="cursor: pointer;"
+                onclick="openModal(this.src)">
+            </div>
+
+                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item sketch">
+              <img src="pencil-sketch(4).jpg" class="img-fluid"
+                alt="Modern A4-sized wall photo frame with personalized photo and glass layere" style="cursor: pointer;"
+                onclick="openModal(this.src)">
+            </div>
+
+
+                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item sketch">
+              <img src="pencil-sketch(5).jpg" class="img-fluid"
+                alt="Modern A4-sized wall photo frame with personalized photo and glass layere" style="cursor: pointer;"
+                onclick="openModal(this.src)">
+            </div>
+
+
+                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item sketch">
+              <img src="pencil-sketch(6).jpg" class="img-fluid"
+                alt="Modern A4-sized wall photo frame with personalized photo and glass layere" style="cursor: pointer;"
+                onclick="openModal(this.src)">
+            </div>
+
+
+                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item sketch">
+              <img src="pencil-sketch(7).jpg" class="img-fluid"
+                alt="Modern A4-sized wall photo frame with personalized photo and glass layere" style="cursor: pointer;"
+                onclick="openModal(this.src)">
+            </div>
+
+
+                        <div class="col-lg-4 col-md-6 portfolio-item isotope-item sketch">
+              <img src="pencil-sketch(8).jpg" class="img-fluid"
+                alt="Modern A4-sized wall photo frame with personalized photo and glass layere" style="cursor: pointer;"
+                onclick="openModal(this.src)">
+            </div>
+            <!--Sketch section end-->
+
+
+
+
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-              <img src="personalized-customized-pencil-sketch-01.jpg" class="img-fluid"
+              <img src="pencil-sketch-100.jpg" class="img-fluid"
                 alt="Modern A4-sized wall photo frame with personalized photo and glass layere" style="cursor: pointer;"
                 onclick="openModal(this.src)">
             </div>
 
             <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-              <img src="personalized-customized-pencil-sketch-photoframe-02.jpg" class="img-fluid"
+              <img src="pencil-sketch-102.jpg" class="img-fluid"
                 alt="Frameless-look A4 glass photo frame with custom image and quote" style="cursor: pointer;"
                 onclick="openModal(this.src)">
             </div>
@@ -982,59 +1885,75 @@
 
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
             <div class="member-img">
-              <img src="customized-pencil-sketch-01.jpg" class="img-fluid"
+              <img src="pencil-sketch(1).jpg" class="img-fluid"
                 alt="A4 size couple frame with modern design and scratch-resistant glass">
             </div>
           </div>
 
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
             <div class="member-img">
-              <img src="customized-pencil-sketch-02.jpg" class="img-fluid"
+              <img src="pencil-sketch(2).jpg" class="img-fluid"
                 alt="Gift-worthy A4 customized frame with photo print and protective glass">
             </div>
           </div>
 
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
             <div class="member-img">
-              <img src="customized-pencil-sketch-01.jpg" class="img-fluid"
+              <img src="pencil-sketch(3).jpg" class="img-fluid"
                 alt="A4 frame with personalized design and glass face for home decor">
             </div>
           </div>
 
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
             <div class="member-img">
-              <img src="customized-pencil-sketch-03.jpg" class="img-fluid"
+              <img src="pencil-sketch(4).jpg" class="img-fluid"
                 alt="Creative A4 size wall photo frame with glass protection">
             </div>
           </div>
 
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
             <div class="member-img">
-              <img src="personalized-customized-pencil-sketch-photoframe-02.jpg" class="img-fluid"
+              <img src="pencil-sketch(5).jpg" class="img-fluid"
                 alt="Luxury A4 photo frame with wooden look, name print and glass front">
             </div>
           </div>
 
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
             <div class="member-img">
-              <img src="personalized-customized-pencil-sketch-01.jpg" class="img-fluid"
+              <img src="pencil-sketch(6).jpg" class="img-fluid"
                 alt="A4 custom frame for bedroom wall with elegant photo and glass">
             </div>
           </div>
 
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
             <div class="member-img">
-              <img src="customized-pencil-sketch-05.jpg" class="img-fluid"
+              <img src="pencil-sketch(7).jpg" class="img-fluid"
                 alt="Black A4 frame with custom design under high-quality glass">
             </div>
           </div>
 
           <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
             <div class="member-img">
-              <img src="personalized-pencil-sketch-01.jpg" class="img-fluid"
+              <img src="pencil-sketch(8).jpg" class="img-fluid"
                 alt="Photo frame A4 size with anniversary photo and transparent glass top">
             </div>
           </div>
+
+                    <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
+            <div class="member-img">
+              <img src="pencil-sketch(9).jpg" class="img-fluid"
+                alt="Photo frame A4 size with anniversary photo and transparent glass top">
+            </div>
+          </div>
+
+                    <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos-delay="0">
+            <div class="member-img">
+              <img src="pencil-sketch(10).jpg" class="img-fluid"
+                alt="Photo frame A4 size with anniversary photo and transparent glass top">
+            </div>
+          </div>
+
+
 
           <!-- End Team Member -->
 
@@ -1300,6 +2219,9 @@
 
 
     <!-- gallary end -->
+
+
+    
 
 
 
